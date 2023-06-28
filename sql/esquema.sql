@@ -21,6 +21,7 @@ CREATE TABLE Cliente (
     Data_Nascimento DATE,
     Nivel_Conhecimento VARCHAR(13),
     Precisa_De_Atendimento NUMBER(1,0),
+    CONSTRAINT CK_Nivel_conhecimento CHECK(Nivel_Conhecimento IN ('Iniciante','Intermediario','Avancado')),
     CONSTRAINT Null_cliente CHECK (Email IS NOT NULL AND Username IS NOT NULL AND Senha IS NOT NULL),
     CONSTRAINT PK_Cliente PRIMARY KEY (Email)
 );

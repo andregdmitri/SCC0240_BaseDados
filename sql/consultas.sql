@@ -19,19 +19,27 @@ FROM banimento b JOIN administrador a
 GROUP BY b.administrador_email
 ORDER BY COUNT(*) DESC;
 
--- cliente que cursou todos os modulos
 -- média de avaliações por vídeo
 SELECT a.video_tema, a.video_topico, AVG(nota)
 FROM avalia a JOIN videoaula v
 	ON a.video_tema = v.modulo_tema AND a.video_topico = v.topico
 GROUP BY a.video_tema, a.video_topico;
 
--- voluntarios sem nenhum atendimento
-SELECT a.voluntario_email, COUNT(*)
-FROM atendimento a JOIN voluntario v
-	ON a.voluntario_email = v.email
-GROUP BY a.voluntario_email
-HAVING COUNT(*) = 0;
+-- voluntarios que nunca atenderam ninguem
+SELECT V.Email
+FROM Voluntario V
+WHERE V.Email NOT IN (
+    SELECT A.Voluntario_Email
+    FROM Atendimento A
+);
+
+-- Contagem de voluntários sem nenhum atendimento
+SELECT COUNT(*) AS Total_Voluntarios_Sem_Atendimento
+FROM Voluntario V
+WHERE V.Email NOT IN (
+    SELECT A.Voluntario_Email
+    FROM Atendimento A
+);
 
 -- admnistradores que mais baniram
 SELECT b.administrador_email, COUNT(*)

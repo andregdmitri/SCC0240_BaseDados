@@ -12,7 +12,7 @@ INSERT INTO Cliente (Email, Username, Senha, Nome, Data_Nascimento, Nivel_Conhec
 VALUES ('fernanda@usp.br', 'fernanda', 'senha789', 'Fernanda S', '2000-03-15', 'Intermediario', 1);
 
 INSERT INTO Cliente (Email, Username, Senha, Nome, Data_Nascimento, Nivel_Conhecimento, Precisa_De_Atendimento)
-VALUES ('vitor@usp.br', 'vitor', 'senhaabc', 'Vitor O', '2001-11-20', 'Avançado', 0);
+VALUES ('vitor@usp.br', 'vitor', 'senhaabc', 'Vitor O', '2001-11-20', 'Avancado', 0);
 
 
 -- Inserção de dados na tabela Voluntario
