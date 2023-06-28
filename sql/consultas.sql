@@ -19,3 +19,11 @@ GROUP BY b.administrador_email
 ORDER BY COUNT(*) DESC
 
 -- cliente que cursou todos os modulos
+SELECT cliente_email
+FROM cursa c
+WHERE NOT EXISTS ((SELECT tema
+				   FROM modulo)
+				 EXCEPT
+				  (SELECT modulo_tema
+				   FROM cursa
+				   WHERE cliente_email = c.cliente_email))
