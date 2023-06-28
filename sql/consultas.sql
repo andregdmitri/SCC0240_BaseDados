@@ -35,8 +35,6 @@ FROM (
 GROUP BY Email
 HAVING COUNT(*) > 1;
 
-
-
 -- voluntarios que nunca atenderam ninguem
 SELECT V.Email
 FROM Voluntario V
@@ -45,7 +43,7 @@ WHERE V.Email NOT IN (
     FROM Atendimento A
 );
 
--- cliente que cursou todos os modulos       
+-- cliente que cursou todos os modulos DO ADM X
 SELECT MAX(cliente_email) AS cliente_email
 FROM cursa c
 WHERE NOT EXISTS (
@@ -61,3 +59,5 @@ WHERE NOT EXISTS (
     )
 )
 GROUP BY cliente_email
+
+--para cada usuarios qtd de testes que acertaram todas as alternaticvas

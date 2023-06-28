@@ -1,6 +1,6 @@
 -- Inserção de dados na tabela Administrador
 INSERT INTO Administrador (Email, Username, Senha, Nome, Data_Nascimento)
-VALUES ('andre@usp.com', 'andre', 'senha123', 'Andre Mitri', '1999-01-01');
+VALUES ('andre@usp.br', 'andre', 'senha123', 'Andre Mitri', '1999-01-01');
 
 INSERT INTO Administrador (Email, Username, Senha, Nome, Data_Nascimento)
 VALUES ('fabio@usp.br', 'fabio', 'senha456', 'Fabio', '2000-05-10');
@@ -29,11 +29,13 @@ VALUES ('luis@usp.br', 'luis', 'sen1aabc', 'Luis V', '2001-11-20');
 
 -- Inserção de dados na tabela Banimento
 INSERT INTO Banimento (Data_Hora, Administrador_Email, Voluntario_Email, Motivo, Duracao)
-VALUES (SYSDATE, 'andre@usp.com', 'leo@usp.br', 'Comportamento inadequado', TIMESTAMP '2023-04-30 23:59:59');
+VALUES (SYSDATE, 'andre@usp.br', 'leo@usp.br', 'Comportamento inadequado', TIMESTAMP '2023-04-30 23:59:59');
 
 INSERT INTO Banimento (Data_Hora, Administrador_Email, Voluntario_Email, Motivo, Duracao)
-VALUES (SYSDATE, 'fabio@usp.br', 'bia@usp.br', 'Violação das regras da comunidad', TIMESTAMP '2022-02-02 23:59:59');
+VALUES (SYSDATE, 'fabio@usp.br', 'bia@usp.br', 'Violação das regras da comunidade', TIMESTAMP '2022-02-02 23:59:59');
 
+INSERT INTO Banimento (Data_Hora, Administrador_Email, Voluntario_Email, Motivo, Duracao)
+VALUES (SYSDATE-100, 'fabio@usp.br', 'leo@usp.br', 'Violação das regras da comunidade', TIMESTAMP '2010-01-01 21:59:59');
 
 
 -- Inserção de dados na tabela Capacidades
@@ -47,7 +49,7 @@ VALUES ('bia@usp.br', 'Pesquisas Google');
 
 -- Inserção de dados na tabela Modulo
 INSERT INTO Modulo (Tema, Administrador_Email)
-VALUES ('Buscas no Google', 'andre@usp.com');
+VALUES ('Buscas no Google', 'andre@usp.br');
 
 INSERT INTO Modulo (Tema, Administrador_Email)
 VALUES ('Redes Sociais', 'fabio@usp.br');
@@ -90,7 +92,7 @@ INSERT INTO Atendimento (Data_Hora, Cliente_Email, Voluntario_Email, Nota)
 VALUES (SYSDATE, 'fernanda@usp.br', 'leo@usp.br', 10);
 
 INSERT INTO Atendimento (Data_Hora, Cliente_Email, Voluntario_Email, Nota)
-VALUES (SYSDATE, 'fernanda@usp.br', 'bia@usp.br', 7);
+VALUES (SYSDATE-100, 'fernanda@usp.br', 'bia@usp.br', 7);
 
 
 

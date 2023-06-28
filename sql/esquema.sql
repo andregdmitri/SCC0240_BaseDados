@@ -1,39 +1,42 @@
 --Formato padrao para data
 ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD';
 
+
+-- COLOCAR NOT NULL
+-- REGEX PARA E MAIL
 -- Tabela Administrador
 CREATE TABLE Administrador (
-    Email VARCHAR(32),
-    Username VARCHAR(32),
-    Senha VARCHAR(32),
-    Nome VARCHAR(32),
+    Email VARCHAR2(32) NOT NULL,
+    Username VARCHAR2(32) NOT NULL,
+    Senha VARCHAR2(32) NOT NULL,
+    Nome VARCHAR2(32),
     Data_Nascimento DATE,
-    CONSTRAINT Null_adm CHECK (Email IS NOT NULL AND Username IS NOT NULL AND Senha IS NOT NULL),
+    CONSTRAINT CK_email CHECK (REGEXP_LIKE (Email, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$')),
     CONSTRAINT PK_Administrador PRIMARY KEY (Email)
 );
 
 -- Tabela Cliente
 CREATE TABLE Cliente (
-    Email VARCHAR(32),
-    Username VARCHAR(32),
-    Senha VARCHAR(32),
-    Nome VARCHAR(32),
+    Email VARCHAR2(32) NOT NULL,
+    Username VARCHAR2(32) NOT NULL,
+    Senha VARCHAR2(32) NOT NULL,
+    Nome VARCHAR2(32),
     Data_Nascimento DATE,
-    Nivel_Conhecimento VARCHAR(13),
+    Nivel_Conhecimento VARCHAR2(13),
     Precisa_De_Atendimento NUMBER(1,0),
+    CONSTRAINT CK_email CHECK (REGEXP_LIKE (Email, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$')),
     CONSTRAINT CK_Nivel_conhecimento CHECK(Nivel_Conhecimento IN ('Iniciante','Intermediario','Avancado')),
-    CONSTRAINT Null_cliente CHECK (Email IS NOT NULL AND Username IS NOT NULL AND Senha IS NOT NULL),
     CONSTRAINT PK_Cliente PRIMARY KEY (Email)
 );
 
--- Tabela Voluntário
+-- Tabela Voluntario
 CREATE TABLE Voluntario (
-    Email VARCHAR(32),
-    Username VARCHAR(32),
-    Senha VARCHAR(32),
-    Nome VARCHAR(32),
+    Email VARCHAR2(32) NOT NULL,
+    Username VARCHAR2(32) NOT NULL,
+    Senha VARCHAR2(32) NOT NULL,
+    Nome VARCHAR2(32),
     Data_Nascimento DATE,
-    CONSTRAINT Null_voluntario CHECK (Email IS NOT NULL AND Username IS NOT NULL AND Senha IS NOT NULL),
+    CONSTRAINT CK_email CHECK (REGEXP_LIKE (Email, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$')),
     CONSTRAINT PK_Voluntario PRIMARY KEY (Email)
 );
 
@@ -41,11 +44,10 @@ CREATE TABLE Voluntario (
 -- Tabela Banimento
 CREATE TABLE Banimento (
     Data_Hora DATE NOT NULL,
-    Administrador_Email VARCHAR(32),
-    Voluntario_Email VARCHAR(32),
-    Motivo VARCHAR(128),
+    Administrador_Email VARCHAR2(32) NOT NULL,
+    Voluntario_Email VARCHAR2(32) NOT NULL,
+    Motivo VARCHAR2(128),
     Duracao TIMESTAMP,
-    CONSTRAINT Null_banimento CHECK (Administrador_Email IS NOT NULL AND Voluntario_Email IS NOT NULL),
     CONSTRAINT PK_Banimneto PRIMARY KEY (Data_Hora, Voluntario_Email),
     FOREIGN KEY (Administrador_Email) REFERENCES Administrador(Email)
         ON	DELETE	CASCADE,
@@ -55,9 +57,8 @@ CREATE TABLE Banimento (
 
 -- Tabela Capacidades
 CREATE TABLE Capacidades (
-    Voluntario_Email VARCHAR(32) NOT NULL,
-    Capacidade VARCHAR(32) NOT NULL,
-    CONSTRAINT Null_capacidades CHECK (Voluntario_Email IS NOT NULL AND Capacidade IS NOT NULL),
+    Voluntario_Email VARCHAR2(32) NOT NULL,
+    Capacidade VARCHAR2(32) NOT NULL,
     CONSTRAINT PK_Capacidades PRIMARY KEY (Voluntario_Email, Capacidade),
     FOREIGN KEY (Voluntario_Email) REFERENCES Voluntario(Email)
         ON	DELETE	CASCADE
@@ -65,19 +66,17 @@ CREATE TABLE Capacidades (
 
 -- Tabela Modulo
 CREATE TABLE Modulo (
-    Tema VARCHAR(16),
-    Administrador_Email VARCHAR(32),
-    CONSTRAINT Null_modulo CHECK (Tema IS NOT NULL AND Administrador_Email IS NOT NULL),
+    Tema VARCHAR2(16) NOT NULL,
+    Administrador_Email VARCHAR2(32) NOT NULL,
     CONSTRAINT PK_Modulo PRIMARY KEY (Tema),
     FOREIGN KEY (Administrador_Email) REFERENCES Administrador(Email)
 );
 
 -- Tabela Cursa
 CREATE TABLE Cursa (
-    Cliente_Email VARCHAR(32),
-    Modulo_Tema VARCHAR(32),
+    Cliente_Email VARCHAR2(32) NOT NULL,
+    Modulo_Tema VARCHAR2(32) NOT NULL,
     Porcentagem_Progresso DECIMAL(4,2),
-    CONSTRAINT Null_cursa CHECK (Cliente_Email IS NOT NULL AND Modulo_Tema IS NOT NULL),
     CONSTRAINT PK_Cursa PRIMARY KEY (Cliente_Email, Modulo_Tema),
     FOREIGN KEY (Cliente_Email) REFERENCES Cliente(Email)
         ON	DELETE	CASCADE,
@@ -87,27 +86,24 @@ CREATE TABLE Cursa (
 
 -- Tabela Video Aula
 CREATE TABLE VideoAula (
-    Modulo_Tema VARCHAR(32),
-    Topico VARCHAR(32),
-    Descricao VARCHAR(512),
+    Modulo_Tema VARCHAR2(32) NOT NULL,
+    Topico VARCHAR2(32) NOT NULL,
+    Descricao VARCHAR2(512),
     Tempo INT,
-    Url_video VARCHAR(128),
-    CONSTRAINT Null_videoaula 
-        CHECK (Modulo_Tema IS NOT NULL AND Topico IS NOT NULL),
+    Url_video VARCHAR2(128),
     CONSTRAINT PK_VideoAula PRIMARY KEY (Modulo_Tema, Topico),
     FOREIGN KEY (Modulo_Tema) REFERENCES Modulo(Tema)
         ON	DELETE	CASCADE
 );
 
+-- CONTRAINT EXPLICITAS
 -- Tabela Avalia
 CREATE TABLE Avalia (
-    Cliente_Email VARCHAR(32),
-    Video_Tema VARCHAR(32),
-    Video_Topico VARCHAR(32),
-    Nota INT
-        CHECK (Nota >= 0 AND Nota <= 10),
-    CONSTRAINT Null_avalia
-        CHECK (Cliente_Email IS NOT NULL AND Video_Tema IS NOT NULL AND Video_Topico IS NOT NULL),
+    Cliente_Email VARCHAR2(32) NOT NULL,
+    Video_Tema VARCHAR2(32) NOT NULL,
+    Video_Topico VARCHAR2(32) NOT NULL,
+    Nota NUMBER,
+    CONSTRAINT CK_nota CHECK(Nota BETWEEN 0 AND 10), 
     PRIMARY KEY (Cliente_Email, Video_Tema, Video_Topico),
     FOREIGN KEY (Cliente_Email) REFERENCES Cliente(Email)
         ON	DELETE	CASCADE,
@@ -118,14 +114,11 @@ CREATE TABLE Avalia (
 -- Tabela Atendimento
 CREATE TABLE Atendimento (
     Data_Hora DATE NOT NULL,
-    Cliente_Email VARCHAR(32) NOT NULL,
-    Voluntario_Email VARCHAR(32) NOT NULL,
-    Nota INT,
-    CONSTRAINT Null_atendimento 
-        CHECK (Cliente_Email IS NOT NULL AND Voluntario_Email IS NOT NULL),
+    Cliente_Email VARCHAR2(32) NOT NULL,
+    Voluntario_Email VARCHAR2(32) NOT NULL,
+    Nota NUMBER,
     CONSTRAINT PK_Atendimento PRIMARY KEY (Data_Hora, Cliente_Email),
-    CONSTRAINT CT_Nota 
-        CHECK(Nota BETWEEN 0 AND 10),
+    CONSTRAINT CK_Nota CHECK(Nota BETWEEN 0 AND 10),
     FOREIGN KEY (Cliente_Email) REFERENCES Cliente(Email)
         ON	DELETE	CASCADE,
     FOREIGN KEY (Voluntario_Email) REFERENCES Voluntario(Email)
@@ -134,13 +127,10 @@ CREATE TABLE Atendimento (
 
 -- Tabela Teste
 CREATE TABLE Teste (
-    Modulo_Tema VARCHAR(32),
-    Numero INT,
-    Nivel_Dificuldade VARCHAR(13),
-    Tempo_para_completar INTERVAL DAY TO SECOND,
-    CONSTRAINT Null_teste 
-        CHECK (Modulo_Tema IS NOT NULL AND Numero IS NOT NULL 
-        AND Nivel_Dificuldade IS NOT NULL AND Tempo_para_completar IS NOT NULL),
+    Modulo_Tema VARCHAR2(32) NOT NULL,
+    Numero INT NOT NULL,
+    Nivel_Dificuldade VARCHAR2(13) NOT NULL,
+    Tempo_para_completar INTERVAL DAY TO SECOND NOT NULL,
     CONSTRAINT PK_Teste PRIMARY KEY (Modulo_Tema, Numero),
     FOREIGN KEY (Modulo_Tema) REFERENCES Modulo(Tema)
         ON	DELETE	CASCADE
@@ -149,11 +139,11 @@ CREATE TABLE Teste (
 -- Tabela Resultado
 CREATE TABLE Resultado (
     Id_resultado NUMBER GENERATED by default on null as IDENTITY,
-    Cliente_Email VARCHAR(32),
-    Teste_Tema VARCHAR(16),
-    Teste_Numero INT,
+    Cliente_Email VARCHAR2(32),
+    Teste_Tema VARCHAR2(16),
+    Teste_Numero NUMBER,
     Data_Hora DATE,
-    Mensagem_Feedback VARCHAR(256),
+    Mensagem_Feedback VARCHAR2(256),
     Aprovacao NUMBER(1,0),
     CONSTRAINT UNQ_Resultado UNIQUE(Cliente_Email, Teste_Tema, Teste_Numero, Data_Hora),
     CONSTRAINT PK_Resultado PRIMARY KEY (Id_resultado),
@@ -166,14 +156,11 @@ CREATE TABLE Resultado (
 -- Tabela Questao
 CREATE TABLE Questao (
     Id_questao NUMBER GENERATED by default on null as IDENTITY,
-    Topico VARCHAR(64),
-    Teste_Tema VARCHAR(16),
-    Teste_Numero INT,
-    Pergunta VARCHAR(1024),
-    Resposta_correta VARCHAR(1024),
-    CONSTRAINT Null_Questao
-        CHECK (Topico IS NOT NULL AND Teste_Tema IS NOT NULL 
-        AND Teste_Numero IS NOT NULL),
+    Topico VARCHAR2(64) NOT NULL,
+    Teste_Tema VARCHAR2(16) NOT NULL,
+    Teste_Numero INT NOT NULL,
+    Pergunta VARCHAR2(1024),
+    Resposta_correta VARCHAR2(1024),
     CONSTRAINT UNQ_Questao UNIQUE(Topico, Teste_Tema, Teste_Numero),
     CONSTRAINT PK_Questao PRIMARY KEY (Id_questao),
     FOREIGN KEY (Teste_Tema, Teste_Numero) REFERENCES Teste(Modulo_Tema,Numero)
@@ -182,13 +169,10 @@ CREATE TABLE Questao (
 
 -- Tabela Medalha
 CREATE TABLE Medalha (
-    Nome VARCHAR(32),
-    Teste_Tema VARCHAR(16),
-    Teste_Numero INT,
-    Descricao VARCHAR(128),
-    CONSTRAINT Null_Medalha
-        CHECK (Nome IS NOT NULL AND Teste_Tema IS NOT NULL 
-        AND Teste_Numero IS NOT NULL),
+    Nome VARCHAR2(32) NOT NULL,
+    Teste_Tema VARCHAR2(16) NOT NULL,
+    Teste_Numero INT NOT NULL,
+    Descricao VARCHAR2(128),
     CONSTRAINT PK_Medalha PRIMARY KEY (Teste_Tema, Teste_Numero, Nome),
     FOREIGN KEY (Teste_Tema, Teste_Numero)
         REFERENCES Teste(Modulo_Tema, Numero)
@@ -197,12 +181,10 @@ CREATE TABLE Medalha (
 
 -- Tabela Resposta Questao
 CREATE TABLE RespostaQuestao (
-    Resultado NUMBER,
-    Questao NUMBER,
-    Resposta_Cliente VARCHAR(1024),
+    Resultado NUMBER NOT NULL,
+    Questao NUMBER NOT NULL,
+    Resposta_Cliente VARCHAR2(1024),
     Acerto_da_Resposta NUMBER(1,0),
-    CONSTRAINT Null_Resposta
-        CHECK (Resultado IS NOT NULL AND Questao IS NOT NULL),
     CONSTRAINT PK_RespostaQuestao PRIMARY KEY (Resultado, Questao),
     FOREIGN KEY (Resultado) 
         REFERENCES Resultado(Id_resultado)
@@ -211,17 +193,12 @@ CREATE TABLE RespostaQuestao (
         ON	DELETE	CASCADE
 );
 
-
-
-
 -- Tabela Alternativa
 CREATE TABLE Alternativa (
-    Questao NUMBER,
-    Numero INT,
+    Questao NUMBER NOT NULL,
+    Numero INT NOT NULL,
     Resposta NUMBER(1,0),
-    Texto VARCHAR(512),
-    CONSTRAINT Null_Alternativa
-        CHECK (Questao IS NOT NULL AND Numero IS NOT NULL),
+    Texto VARCHAR2(512),
     CONSTRAINT PK_Alternativa PRIMARY KEY (Questao, Numero),
     FOREIGN KEY (Questao) REFERENCES Questao(Id_questao)
         ON	DELETE	CASCADE
