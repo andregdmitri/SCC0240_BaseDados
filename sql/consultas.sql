@@ -27,14 +27,6 @@ WHERE V.Email NOT IN (
     FROM Atendimento A
 );
 
--- Contagem de voluntários sem nenhum atendimento
-SELECT COUNT(*) AS Total_Voluntarios_Sem_Atendimento
-FROM Voluntario V
-WHERE V.Email NOT IN (
-    SELECT A.Voluntario_Email
-    FROM Atendimento A
-);
-
 -- cliente que cursou todos os modulos       
 SELECT MAX(cliente_email) AS cliente_email
 FROM cursa c
