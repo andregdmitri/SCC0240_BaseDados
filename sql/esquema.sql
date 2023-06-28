@@ -1,3 +1,6 @@
+--Formato padrao para data
+ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD';
+
 -- Tabela Administrador
 CREATE TABLE Administrador (
     Email VARCHAR(32),

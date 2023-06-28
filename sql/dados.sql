@@ -1,6 +1,3 @@
--- Padrao de data utilizado
---ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD'
-
 -- Inserção de dados na tabela Administrador
 INSERT INTO Administrador (Email, Username, Senha, Nome, Data_Nascimento)
 VALUES ('andre@usp.com', 'andre', 'senha123', 'Andre Mitri', '1999-01-01');
@@ -18,13 +15,15 @@ INSERT INTO Cliente (Email, Username, Senha, Nome, Data_Nascimento, Nivel_Conhec
 VALUES ('vitor@usp.br', 'vitor', 'senhaabc', 'Vitor O', '2001-11-20', 'Avançado', 0);
 
 
-
 -- Inserção de dados na tabela Voluntario
 INSERT INTO Voluntario (Email, Username, Senha, Nome, Data_Nascimento)
 VALUES ('leo@usp.br', 'leonardo', 'senhaxyz', 'Leonardo T', '2001-06-25');
 
 INSERT INTO Voluntario (Email, Username, Senha, Nome, Data_Nascimento)
 VALUES ('bia@usp.br', 'bia', 'senha123abc', 'Bianca', '2000-09-05');
+
+INSERT INTO Voluntario (Email, Username, Senha, Nome, Data_Nascimento)
+VALUES ('luis@usp.br', 'luis', 'sen1aabc', 'Luis V', '2001-11-20');
 
 
 
@@ -62,6 +61,9 @@ VALUES ('fernanda@usp.br', 'Buscas no Google', 75.5);
 INSERT INTO Cursa (Cliente_Email, Modulo_Tema, Porcentagem_Progresso)
 VALUES ('vitor@usp.br', 'Redes Sociais', 50.2);
 
+INSERT INTO Cursa (Cliente_Email, Modulo_Tema, Porcentagem_Progresso)
+VALUES ('vitor@usp.br', 'Buscas no Google', 30.2);
+
 
 
 -- Inserção de dados na tabela VideoAula
@@ -80,14 +82,15 @@ VALUES ('fernanda@usp.br', 'Buscas no Google', 'Introducao as Buscas', 9);
 INSERT INTO Avalia (Cliente_Email, Video_Tema, Video_Topico, Nota)
 VALUES ('vitor@usp.br', 'Redes Sociais', 'Redes Sociais mais utilizadas', 8);
 
-
+INSERT INTO Avalia (Cliente_Email, Video_Tema, Video_Topico, Nota)
+VALUES ('vitor@usp.br', 'Buscas no Google', 'Introducao as Buscas', 10);
 
 -- Inserção de dados na tabela Atendimento
 INSERT INTO Atendimento (Data_Hora, Cliente_Email, Voluntario_Email, Nota)
 VALUES (SYSDATE, 'fernanda@usp.br', 'leo@usp.br', 10);
 
 INSERT INTO Atendimento (Data_Hora, Cliente_Email, Voluntario_Email, Nota)
-VALUES (SYSDATE, 'vitor@usp.br', 'bia@usp.br', 7);
+VALUES (SYSDATE, 'fernanda@usp.br', 'bia@usp.br', 7);
 
 
 
@@ -142,3 +145,5 @@ VALUES (1, 1, 1, 'Alternativa 1 da Questão 1');
 
 INSERT INTO Alternativa (Questao, Numero, Resposta, Texto)
 VALUES (1, 2, 0, 'Alternativa 2 da Questão 1');
+
+commit;
