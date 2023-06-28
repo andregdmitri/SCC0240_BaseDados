@@ -1,3 +1,6 @@
+-- Padrao de data utilizado
+ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD'
+
 -- Inserção de dados na tabela Administrador
 INSERT INTO Administrador (Email, Username, Senha, Nome, Data_Nascimento)
 VALUES ('andre@usp.com', 'andre', 'senha123', 'Andre Mitri', '1999-01-01');
@@ -9,7 +12,7 @@ VALUES ('fabio@usp.br', 'fabio', 'senha456', 'Fabio', '2000-05-10');
 
 -- Inserção de dados na tabela Cliente
 INSERT INTO Cliente (Email, Username, Senha, Nome, Data_Nascimento, Nivel_Conhecimento, Precisa_De_Atendimento)
-VALUES ('fernanda@usp.br', 'fernanda', 'senha789', 'Fernanda S', '2000-03-15', 'Intermediário', 1);
+VALUES ('fernanda@usp.br', 'fernanda', 'senha789', 'Fernanda S', '2000-03-15', 'Intermediario', 1);
 
 INSERT INTO Cliente (Email, Username, Senha, Nome, Data_Nascimento, Nivel_Conhecimento, Precisa_De_Atendimento)
 VALUES ('vitor@usp.br', 'vitor', 'senhaabc', 'Vitor O', '2001-11-20', 'Avançado', 0);
@@ -30,7 +33,7 @@ INSERT INTO Banimento (Data_Hora, Administrador_Email, Voluntario_Email, Motivo,
 VALUES (SYSDATE, 'andre@usp.com', 'leo@usp.br', 'Comportamento inadequado', TIMESTAMP '2023-04-30 23:59:59');
 
 INSERT INTO Banimento (Data_Hora, Administrador_Email, Voluntario_Email, Motivo, Duracao)
-VALUES (SYSDATE, 'fabio@usp.br', 'bia@usp.br', 'Violação das regras da comunidad', TIMESTAMP '2023-02-31 23:59:59');
+VALUES (SYSDATE, 'fabio@usp.br', 'bia@usp.br', 'Violação das regras da comunidad', TIMESTAMP '2022-02-02 23:59:59');
 
 
 
@@ -90,27 +93,27 @@ VALUES (SYSDATE, 'vitor@usp.br', 'bia@usp.br', 7);
 
 -- Inserção de dados na tabela Teste
 INSERT INTO Teste (Modulo_Tema, Numero, Nivel_Dificuldade, Tempo_para_completar)
-VALUES ('Buscas no Google', 1, 'Fácil', DATE '2023-06-15');
+VALUES ('Buscas no Google', 1, 'Facil', TO_DSINTERVAL('4 23:59:59'));
 
 INSERT INTO Teste (Modulo_Tema, Numero, Nivel_Dificuldade, Tempo_para_completar)
-VALUES ('Redes Sociais', 1, 'Médio', DATE '2023-06-20');
+VALUES ('Redes Sociais', 1, 'Medio', TO_DSINTERVAL('2 23:59:59'));
 
 
 
 -- Inserção de dados na tabela Resultado
-INSERT INTO Resultado (Id, Cliente_Email, Teste_Tema, Teste_Numero, Data_Hora, Mensagem_Feedback, Aprovacao)
+INSERT INTO Resultado (Id_resultado, Cliente_Email, Teste_Tema, Teste_Numero, Data_Hora, Mensagem_Feedback, Aprovacao)
 VALUES (1, 'fernanda@usp.br', 'Buscas no Google', 1, SYSDATE, 'Feedback do Teste 1', 1);
 
-INSERT INTO Resultado (Id, Cliente_Email, Teste_Tema, Teste_Numero, Data_Hora, Mensagem_Feedback, Aprovacao)
+INSERT INTO Resultado (Id_resultado, Cliente_Email, Teste_Tema, Teste_Numero, Data_Hora, Mensagem_Feedback, Aprovacao)
 VALUES (2, 'vitor@usp.br', 'Redes Sociais', 1, SYSDATE, 'Feedback do Teste 2', 0);
 
 
 
 -- Inserção de dados na tabela Questao
-INSERT INTO Questao (Id, Topico, Teste_Tema, Teste_Numero, Pergunta, Resposta_correta)
+INSERT INTO Questao (Id_questao, Topico, Teste_Tema, Teste_Numero, Pergunta, Resposta_correta)
 VALUES (1, 'Introducao as Buscas', 'Buscas no Google', 1, 'Pergunta da Questão 1', 'Resposta correta da Questão 1');
 
-INSERT INTO Questao (Id, Topico, Teste_Tema, Teste_Numero, Pergunta, Resposta_correta)
+INSERT INTO Questao (Id_questao, Topico, Teste_Tema, Teste_Numero, Pergunta, Resposta_correta)
 VALUES (2, 'Redes Sociais mais utilizadas', 'Redes Sociais', 1, 'Pergunta da Questão 2', 'Resposta correta da Questão 2');
 
 
@@ -134,8 +137,8 @@ VALUES (2, 2, 'Resposta do Cliente 2', 0);
 
 
 -- Inserção de dados na tabela Alternativa
-INSERT INTO Alternativa (Questao_id, Numero, Resposta, Texto)
+INSERT INTO Alternativa (Questao, Numero, Resposta, Texto)
 VALUES (1, 1, 1, 'Alternativa 1 da Questão 1');
 
-INSERT INTO Alternativa (Questao_id, Numero, Resposta, Texto)
+INSERT INTO Alternativa (Questao, Numero, Resposta, Texto)
 VALUES (1, 2, 0, 'Alternativa 2 da Questão 1');

@@ -17,7 +17,7 @@ CREATE TABLE Cliente (
     Nome VARCHAR(32),
     Data_Nascimento DATE,
     Nivel_Conhecimento VARCHAR(13),
-    Precisa_De_Atendimento BOOLEAN,
+    Precisa_De_Atendimento NUMBER(1,0),
     CONSTRAINT Null_cliente CHECK (Email IS NOT NULL AND Username IS NOT NULL AND Senha IS NOT NULL),
     CONSTRAINT PK_Cliente PRIMARY KEY (Email)
 );
@@ -133,7 +133,7 @@ CREATE TABLE Teste (
     Modulo_Tema VARCHAR(32),
     Numero INT,
     Nivel_Dificuldade VARCHAR(13),
-    Tempo_para_completar INTERVAL DAY TO SECOND,
+    Tempo_para_completar INTERVAL DAY TO MINUTE,
     CONSTRAINT Null_teste 
         CHECK (Modulo_Tema IS NOT NULL AND Numero IS NOT NULL 
         AND Nivel_Dificuldade IS NOT NULL AND Tempo_para_completar IS NOT NULL),
@@ -150,7 +150,7 @@ CREATE TABLE Resultado (
     Teste_Numero INT,
     Data_Hora DATE,
     Mensagem_Feedback VARCHAR(256),
-    Aprovacao BOOLEAN,
+    Aprovacao NUMBER(1,0),
     CONSTRAINT UNQ_Resultado UNIQUE(Cliente_Email, Teste_Tema, Teste_Numero, Data_Hora),
     CONSTRAINT PK_Resultado PRIMARY KEY (Id_resultado),
     FOREIGN KEY (Cliente_Email) REFERENCES Cliente(Email)
@@ -196,14 +196,14 @@ CREATE TABLE RespostaQuestao (
     Resultado NUMBER,
     Questao NUMBER,
     Resposta_Cliente VARCHAR(1024),
-    Acerto_da_Resposta BOOLEAN,
+    Acerto_da_Resposta NUMBER(1,0),
     CONSTRAINT Null_Resposta
         CHECK (Resultado IS NOT NULL AND Questao IS NOT NULL),
     CONSTRAINT PK_RespostaQuestao PRIMARY KEY (Resultado, Questao),
     FOREIGN KEY (Resultado) 
         REFERENCES Resultado(Id_resultado)
         ON	DELETE	CASCADE,
-    FOREIGN KEY (Questao) REFERENCES Teste(questao)
+    FOREIGN KEY (Questao) REFERENCES Questao(Id_questao)
         ON	DELETE	CASCADE
 );
 
@@ -214,7 +214,7 @@ CREATE TABLE RespostaQuestao (
 CREATE TABLE Alternativa (
     Questao NUMBER,
     Numero INT,
-    Resposta BOOLEAN,
+    Resposta NUMBER(1,0),
     Texto VARCHAR(512),
     CONSTRAINT Null_Alternativa
         CHECK (Questao IS NOT NULL AND Numero IS NOT NULL),
@@ -222,3 +222,5 @@ CREATE TABLE Alternativa (
     FOREIGN KEY (Questao) REFERENCES Questao(Id_questao)
         ON	DELETE	CASCADE
 );
+
+commit;
