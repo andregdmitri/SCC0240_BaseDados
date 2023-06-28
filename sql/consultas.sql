@@ -23,7 +23,7 @@ SELECT cliente_email
 FROM cursa c
 WHERE NOT EXISTS ((SELECT tema
 				   FROM modulo)
-				 EXCEPT
+				 MINUS
 				  (SELECT modulo_tema
 				   FROM cursa
 				   WHERE cliente_email = c.cliente_email))
