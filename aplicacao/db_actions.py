@@ -213,6 +213,12 @@ def query_clients(connection: oracledb.Connection):
 
     order_dir = "ASC" if order_by == "Nome" or order_by == "Username" else "DESC"
 
+    # Linguistic sorting
+    if order_by == "Nome":
+        order_by = "NLSSORT(C.Nome, 'NLS_SORT=GENERIC_M')"
+    elif order_by == "Username":
+        order_by = "NLSSORT(C.Username, 'NLS_SORT=GENERIC_M')"
+
     # Formata os parâmetros da consulta
     query_params["needs_help"] = [1] if query_params["needs_help"] == "Sim" else [0] if query_params["needs_help"] == "Não" else [0, 1]
 
