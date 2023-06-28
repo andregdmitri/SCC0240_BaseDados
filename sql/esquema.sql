@@ -133,7 +133,7 @@ CREATE TABLE Teste (
     Modulo_Tema VARCHAR(32),
     Numero INT,
     Nivel_Dificuldade VARCHAR(13),
-    Tempo_para_completar INTERVAL DAY TO MINUTE,
+    Tempo_para_completar INTERVAL DAY TO SECOND,
     CONSTRAINT Null_teste 
         CHECK (Modulo_Tema IS NOT NULL AND Numero IS NOT NULL 
         AND Nivel_Dificuldade IS NOT NULL AND Tempo_para_completar IS NOT NULL),
@@ -222,5 +222,3 @@ CREATE TABLE Alternativa (
     FOREIGN KEY (Questao) REFERENCES Questao(Id_questao)
         ON	DELETE	CASCADE
 );
-
-commit;

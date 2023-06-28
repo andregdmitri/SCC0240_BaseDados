@@ -1,5 +1,5 @@
 -- Padrao de data utilizado
-ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD'
+--ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD'
 
 -- Inserção de dados na tabela Administrador
 INSERT INTO Administrador (Email, Username, Senha, Nome, Data_Nascimento)
