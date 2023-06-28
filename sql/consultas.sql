@@ -1,8 +1,10 @@
--- média de avaliações por vídeo
-SELECT a.video_tema, a.video_topico, AVG(nota)
-FROM avalia a JOIN videoaula v
-	ON a.video_tema = v.modulo_tema AND a.video_topico = v.topico
-GROUP BY a.video_tema, a.video_topico;
+-- Total de avaliações por cliente
+SELECT C.Email, C.Nome, (
+    SELECT COUNT(*)
+    FROM Avalia A
+    WHERE A.Cliente_Email = C.Email
+) AS Total_Avaliacoes
+FROM Cliente C;
 
 -- voluntarios sem nenhum atendimento
 SELECT V.Email
@@ -41,23 +43,19 @@ WHERE V.Email NOT IN (
     FROM Atendimento A
 );
 
--- admnistradores que mais baniram
-SELECT b.administrador_email, COUNT(*)
-FROM banimento b JOIN administrador a
-	ON b.administrador_email = a.email
-GROUP BY b.administrador_email
-ORDER BY COUNT(*) DESC;
-
 -- cliente que cursou todos os modulos       
-SELECT C.Email
-FROM Cliente C
+SELECT MAX(cliente_email) AS cliente_email
+FROM cursa c
 WHERE NOT EXISTS (
-    SELECT M.Tema
-    FROM Modulo M
-    WHERE NOT EXISTS (
-        SELECT CS.Modulo_tema
-        FROM Cursa CS
-        WHERE CS.Cliente_Email = C.Email
-            AND CS.Modulo_Tema = M.Tema
+    (
+        SELECT tema
+        FROM modulo
     )
-);
+    MINUS
+    (
+        SELECT modulo_tema
+        FROM cursa
+        WHERE cliente_email = c.cliente_email
+    )
+)
+GROUP BY cliente_email
