@@ -34,6 +34,14 @@ def name_validator(name):
 
     return True
 
+def name_search_validator(name):
+    if len(name) > 32:
+        return "O nome deve ter no máximo 32 caracteres."
+    if not re.match(r"^[a-zA-Z0-9_ ]*$", name) and name != "":
+        return "O nome deve conter apenas letras, números, _ e espaços."
+
+    return True
+
 def birth_date_validator(birth_date):
     try:
         date = datetime.datetime.strptime(birth_date, "%d/%m/%Y")
@@ -41,5 +49,13 @@ def birth_date_validator(birth_date):
             return "A data de nascimento deve ser anterior à data atual."
     except ValueError:
         return "A data de nascimento deve estar no formato DD/MM/YYYY."
+
+    return True
+
+def knowledge_level_checkbox_validator(knowledge_level):
+    if len(knowledge_level) == 0:
+        return "Selecione pelo menos uma opção."
+    if len(knowledge_level) > 3:
+        return "Selecione no máximo três opções."
 
     return True

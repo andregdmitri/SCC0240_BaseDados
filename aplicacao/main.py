@@ -1,13 +1,15 @@
 from dotenv import load_dotenv
 import os
 import questionary
-from questionary import Choice
+from questionary import Choice, Separator
 import oracledb
 
 from db_actions import *
 
 # Menu principal
 def main_menu(connection: oracledb.Connection):
+
+    os.system("cls||clear")
 
     questionary.print("Bem-vindo ao sistema de gerenciamento do aplicativo de ensino!\n", style="bold italic")
 
@@ -18,11 +20,12 @@ def main_menu(connection: oracledb.Connection):
             Choice(title="Cadastrar um novo cliente", value=1),
             Choice(title="Cadastrar um novo voluntário", value=2),
             Choice(title="Cadastrar um novo administrador", value=3),
-            Choice(title="*TODO: Consulta 1*", value=4),
-            Choice(title="*TODO: Consulta 2*", value=5),
-            Choice(title="Sair do sistema", value=6)
+            Choice(title="Consulta de clientes (Dados, Módulos Cursados, Aprovações e Reprovações)", value=4),
+            Separator(),
+            Choice(title="Sair do sistema", value=5, shortcut_key="q")
         ],
-        instruction="Use as setas para navegar"
+        instruction="Use as setas para navegar",
+        use_shortcuts=True
     ).ask()
 
     print()
@@ -35,16 +38,11 @@ def main_menu(connection: oracledb.Connection):
     elif option == 3:
         register_admin(connection)
     elif option == 4:
-        query_1(connection)
+        query_clients(connection)
     elif option == 5:
-        query_2(connection)
-    elif option == 6:
-        # Encerra a conexão com o banco de dados
-        connection.close()
-        exit()
+        return
 
-    # Limpa a tela e volta para o menu principal
-    os.system("clear")
+    # Volta para o menu principal
     main_menu(connection)
 
 # === PROGRAMA PRINCIPAL ===
@@ -59,11 +57,13 @@ db_service = os.getenv("DB_SERVICE")
 
 # Cria uma conexão com o banco de dados
 try:
-    questionary.print("Conectando ao banco de dados...", style="bold italic")
-    connection = oracledb.connect(user=db_user, password=db_password, host=db_host, port=db_port, service_name=db_service)
-except:
-    questionary.print("Erro ao conectar ao banco de dados!", style="bold fg:red")
-    exit()
 
-# Incia fluxo de execução
-main_menu(connection)
+    questionary.print("Conectando ao banco de dados...", style="bold italic")
+    with oracledb.connect(user=db_user, password=db_password, host=db_host, port=db_port, service_name=db_service) as connection:
+        # Inicia o fluxo de execução
+        main_menu(connection)
+
+except oracledb.DatabaseError as e:
+    questionary.print("Erro ao conectar ao banco de dados!", style="bold fg:red")
+    questionary.print(e.args[0].message, style="bold italic fg:red")
+    exit()
