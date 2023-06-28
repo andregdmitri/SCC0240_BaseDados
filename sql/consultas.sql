@@ -6,14 +6,6 @@ SELECT C.Email, C.Nome, (
 ) AS Total_Avaliacoes
 FROM Cliente C;
 
--- voluntarios sem nenhum atendimento
-SELECT V.Email
-FROM Voluntario V
-WHERE V.Email NOT IN (
-    SELECT A.Voluntario_Email
-    FROM Atendimento A
-);
-
 -- admnistradores que mais baniram
 SELECT b.administrador_email, COUNT(*)
 FROM banimento b JOIN administrador a
