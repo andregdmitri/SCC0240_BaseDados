@@ -19,6 +19,24 @@ FROM avalia a JOIN videoaula v
 	ON a.video_tema = v.modulo_tema AND a.video_topico = v.topico
 GROUP BY a.video_tema, a.video_topico;
 
+-- Verificando se há algum email cadastrado em mais de uma
+-- das tabelas Voluntário, Cliente e Administrador
+SELECT Email
+FROM (
+    SELECT Email
+    FROM Cliente
+    UNION ALL
+    SELECT Email
+    FROM Administrador
+    UNION ALL
+    SELECT Email
+    FROM Voluntario
+) Emails
+GROUP BY Email
+HAVING COUNT(*) > 1;
+
+
+
 -- voluntarios que nunca atenderam ninguem
 SELECT V.Email
 FROM Voluntario V
