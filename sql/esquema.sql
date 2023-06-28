@@ -22,7 +22,7 @@ CREATE TABLE Cliente (
     CONSTRAINT PK_Cliente PRIMARY KEY (Email)
 );
 
--- Tabela Volunt·rio
+-- Tabela Volunt√°rio
 CREATE TABLE Voluntario (
     Email VARCHAR(32),
     Username VARCHAR(32),
@@ -107,7 +107,7 @@ CREATE TABLE Avalia (
     PRIMARY KEY (Cliente_Email, Video_Tema, Video_Topico),
     FOREIGN KEY (Cliente_Email) REFERENCES Cliente(Email)
         ON	DELETE	CASCADE,
-    FOREIGN KEY (Video_Tema , Video_Topico) REFERENCES VideoAula(Modulo_Tema, Video_Topico)
+    FOREIGN KEY (Video_Tema , Video_Topico) REFERENCES VideoAula(Modulo_Tema, Topico)
         ON	DELETE	CASCADE
 );
 
@@ -203,7 +203,7 @@ CREATE TABLE RespostaQuestao (
     FOREIGN KEY (Resultado) 
         REFERENCES Resultado(Id_resultado)
         ON	DELETE	CASCADE,
-    FOREIGN KEY (Questao) REFERENCES Teste(Id_questao)
+    FOREIGN KEY (Questao) REFERENCES Teste(questao)
         ON	DELETE	CASCADE
 );
 
