@@ -1,9 +1,6 @@
 --Formato padrao para data
 ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD';
 
-
--- COLOCAR NOT NULL
--- REGEX PARA E MAIL
 -- Tabela Administrador
 CREATE TABLE Administrador (
     Email VARCHAR2(32) NOT NULL,
@@ -24,7 +21,7 @@ CREATE TABLE Cliente (
     Data_Nascimento DATE,
     Nivel_Conhecimento VARCHAR2(13),
     Precisa_De_Atendimento NUMBER(1,0),
-    CONSTRAINT CK_email CHECK (REGEXP_LIKE (Email, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$')),
+    CONSTRAINT CK_email_cliente CHECK (REGEXP_LIKE (Email, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$')),
     CONSTRAINT CK_Nivel_conhecimento CHECK(Nivel_Conhecimento IN ('Iniciante','Intermediario','Avancado')),
     CONSTRAINT PK_Cliente PRIMARY KEY (Email)
 );
@@ -36,7 +33,7 @@ CREATE TABLE Voluntario (
     Senha VARCHAR2(32) NOT NULL,
     Nome VARCHAR2(32),
     Data_Nascimento DATE,
-    CONSTRAINT CK_email CHECK (REGEXP_LIKE (Email, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$')),
+    CONSTRAINT CK_email_voluntario CHECK (REGEXP_LIKE (Email, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$')),
     CONSTRAINT PK_Voluntario PRIMARY KEY (Email)
 );
 
@@ -116,9 +113,9 @@ CREATE TABLE Atendimento (
     Data_Hora DATE NOT NULL,
     Cliente_Email VARCHAR2(32) NOT NULL,
     Voluntario_Email VARCHAR2(32) NOT NULL,
-    Nota NUMBER,
+    Nota INT,
     CONSTRAINT PK_Atendimento PRIMARY KEY (Data_Hora, Cliente_Email),
-    CONSTRAINT CK_Nota CHECK(Nota BETWEEN 0 AND 10),
+    CONSTRAINT CK_Nota_atendimento CHECK(Nota BETWEEN 0 AND 10),
     FOREIGN KEY (Cliente_Email) REFERENCES Cliente(Email)
         ON	DELETE	CASCADE,
     FOREIGN KEY (Voluntario_Email) REFERENCES Voluntario(Email)
@@ -203,3 +200,5 @@ CREATE TABLE Alternativa (
     FOREIGN KEY (Questao) REFERENCES Questao(Id_questao)
         ON	DELETE	CASCADE
 );
+
+COMMIT;
