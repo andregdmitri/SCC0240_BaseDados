@@ -1,3 +1,6 @@
+--Formato padrao para data
+ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD';
+
 -- Inserção de dados na tabela Administrador
 INSERT INTO Administrador (Email, Username, Senha, Nome, Data_Nascimento)
 VALUES ('andre@usp.br', 'andre', 'senha123', 'Andre Mitri', '1999-01-01');
@@ -5,6 +8,8 @@ VALUES ('andre@usp.br', 'andre', 'senha123', 'Andre Mitri', '1999-01-01');
 INSERT INTO Administrador (Email, Username, Senha, Nome, Data_Nascimento)
 VALUES ('fabio@usp.br', 'fabio', 'senha456', 'Fabio', '2000-05-10');
 
+INSERT INTO Administrador (Email, Username, Senha, Nome, Data_Nascimento)
+VALUES ('gustavo@usp.br', 'Gus', 's23ha416', 'Gustavo', '2002-01-10');
 
 
 -- Inserção de dados na tabela Cliente
@@ -14,6 +19,8 @@ VALUES ('fernanda@usp.br', 'fernanda', 'senha789', 'Fernanda S', '2000-03-15', '
 INSERT INTO Cliente (Email, Username, Senha, Nome, Data_Nascimento, Nivel_Conhecimento, Precisa_De_Atendimento)
 VALUES ('vitor@usp.br', 'vitor', 'senhaabc', 'Vitor O', '2001-11-20', 'Avancado', 0);
 
+INSERT INTO Cliente (Email, Username, Senha, Nome, Data_Nascimento, Nivel_Conhecimento, Precisa_De_Atendimento)
+VALUES ('gustavo@usp.br', 'Gus', 's23ha416', 'Gustavo', '2002-01-10', 'Iniciante', 0);
 
 -- Inserção de dados na tabela Voluntario
 INSERT INTO Voluntario (Email, Username, Senha, Nome, Data_Nascimento)
@@ -92,7 +99,7 @@ INSERT INTO Atendimento (Data_Hora, Cliente_Email, Voluntario_Email, Nota)
 VALUES (SYSDATE, 'fernanda@usp.br', 'leo@usp.br', 10);
 
 INSERT INTO Atendimento (Data_Hora, Cliente_Email, Voluntario_Email, Nota)
-VALUES (SYSDATE-100, 'fernanda@usp.br', 'bia@usp.br', 7);
+VALUES (SYSDATE-100, 'fernanda@usp.br', 'bia@usp.br', 2);
 
 
 
@@ -116,10 +123,10 @@ VALUES (2, 'vitor@usp.br', 'Redes Sociais', 1, SYSDATE, 'Feedback do Teste 2', 0
 
 -- Inserção de dados na tabela Questao
 INSERT INTO Questao (Id_questao, Topico, Teste_Tema, Teste_Numero, Pergunta, Resposta_correta)
-VALUES (1, 'Introducao as Buscas', 'Buscas no Google', 1, 'Pergunta da Questão 1', 'Resposta correta da Questão 1');
+VALUES (1, 'Introducao as Buscas', 'Buscas no Google', 1, 'Pergunta da Questao 1', 'Resposta correta da Questão 1');
 
 INSERT INTO Questao (Id_questao, Topico, Teste_Tema, Teste_Numero, Pergunta, Resposta_correta)
-VALUES (2, 'Redes Sociais mais utilizadas', 'Redes Sociais', 1, 'Pergunta da Questão 2', 'Resposta correta da Questão 2');
+VALUES (2, 'Redes Sociais mais utilizadas', 'Redes Sociais', 1, 'Pergunta da Questao 2', 'Resposta correta da Questão 2');
 
 
 
@@ -143,9 +150,9 @@ VALUES (2, 2, 'Resposta do Cliente 2', 0);
 
 -- Inserção de dados na tabela Alternativa
 INSERT INTO Alternativa (Questao, Numero, Resposta, Texto)
-VALUES (1, 1, 1, 'Alternativa 1 da Questão 1');
+VALUES (1, 1, 1, 'Alternativa 1 da Questao 1');
 
 INSERT INTO Alternativa (Questao, Numero, Resposta, Texto)
-VALUES (1, 2, 0, 'Alternativa 2 da Questão 1');
+VALUES (1, 2, 0, 'Alternativa 2 da Questao 1');
 
 commit;
