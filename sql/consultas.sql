@@ -51,18 +51,12 @@ GROUP BY VA.Topico;
 -- e tem menos de 3 capacidades
 SELECT V.Email, V.Username
 FROM Voluntario V
-WHERE V.Email IN (
-    SELECT A.Voluntario_Email
-    FROM Atendimento A
-    GROUP BY A.Voluntario_Email
-    HAVING COUNT(A.Data_Hora) < 3 AND AVG(A.Nota) < 5
-)
-AND V.Email IN (
-    SELECT C.Voluntario_Email
-    FROM Capacidades C
-    GROUP BY C.Voluntario_Email
-    HAVING COUNT(C.Capacidade) < 3
-);
+JOIN Atendimento A ON V.Email = A.Voluntario_Email
+JOIN Capacidades C ON V.Email = C.Voluntario_Email
+GROUP BY V.Email, V.Username
+HAVING COUNT(DISTINCT A.Data_Hora) < 3
+    AND AVG(A.Nota) < 5
+    AND COUNT(DISTINCT C.Capacidade) < 3;
 
 -- Cliente que cursou todos os modulos de um administrador especifico, 
 -- nesse caso o adm André.
