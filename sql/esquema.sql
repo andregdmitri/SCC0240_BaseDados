@@ -1,5 +1,5 @@
 --Formato padrao para data
-ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD';
+ALTER SESSION SET NLS_DATE_FORMAT='DD-MM-YYYY';
 
 -- Tabela Administrador
 CREATE TABLE Administrador (
@@ -8,6 +8,7 @@ CREATE TABLE Administrador (
     Senha VARCHAR2(32) NOT NULL,
     Nome VARCHAR2(32),
     Data_Nascimento DATE,
+    CONSTRAINT SK_username_Administrador UNIQUE (Username),
     CONSTRAINT CK_email CHECK (REGEXP_LIKE (Email, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$')),
     CONSTRAINT PK_Administrador PRIMARY KEY (Email)
 );
@@ -21,6 +22,7 @@ CREATE TABLE Cliente (
     Data_Nascimento DATE,
     Nivel_Conhecimento VARCHAR2(13),
     Precisa_De_Atendimento NUMBER(1,0),
+    CONSTRAINT SK_username_Cliente UNIQUE (Username),
     CONSTRAINT CK_email_cliente CHECK (REGEXP_LIKE (Email, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$')),
     CONSTRAINT CK_Nivel_conhecimento CHECK(Nivel_Conhecimento IN ('Iniciante','Intermediario','Avancado')),
     CONSTRAINT PK_Cliente PRIMARY KEY (Email)
@@ -33,6 +35,7 @@ CREATE TABLE Voluntario (
     Senha VARCHAR2(32) NOT NULL,
     Nome VARCHAR2(32),
     Data_Nascimento DATE,
+    CONSTRAINT SK_username_Voluntario UNIQUE (Username),
     CONSTRAINT CK_email_voluntario CHECK (REGEXP_LIKE (Email, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$')),
     CONSTRAINT PK_Voluntario PRIMARY KEY (Email)
 );
