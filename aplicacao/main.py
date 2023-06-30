@@ -26,7 +26,7 @@ def main_menu(connection: oracledb.Connection):
         ],
         instruction="Use as setas para navegar",
         use_shortcuts=True
-    ).ask()
+    ).ask(kbi_msg="")
 
     print()
 
@@ -39,7 +39,8 @@ def main_menu(connection: oracledb.Connection):
         register_admin(connection)
     elif option == 4:
         query_clients(connection)
-    elif option == 5:
+    elif option == 5 or option == None:
+        questionary.print("Saindo do sistema...", style="bold italic")
         return
 
     # Volta para o menu principal

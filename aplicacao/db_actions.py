@@ -5,6 +5,15 @@ import tabulate
 
 from validators import *
 
+# Tratamento de erros
+def get_error_message(e: oracledb.Error):
+    if e is oracledb.IntegrityError:
+        return "Dados inválidos ou chave já existente!"
+    else:
+        return e.args[0].message
+
+
+
 # Cadastra um novo cliente
 def register_client(connection: oracledb.Connection):
 
@@ -29,7 +38,14 @@ def register_client(connection: oracledb.Connection):
             ),
 
             needs_help = questionary.confirm(message="O cliente precisa de atendimento?"),
-        ).ask()
+        ).ask(kbi_msg="")
+
+        if client_data == {}:
+            questionary.print("\nOperação cancelada pelo usuário!", style="bold fg:red")
+            questionary.print("Pressione ENTER para continuar...", style="italic")
+            input()
+            # Volta para o menu principal
+            return
 
         client_data["needs_help"] = 1 if client_data["needs_help"] else 0
     
@@ -46,10 +62,11 @@ def register_client(connection: oracledb.Connection):
                 """,
                 client_data
             )
-        except oracledb.DatabaseError as e:
+        except oracledb.Error as e:
             # Mostra mensagem de erro
             questionary.print("\nErro ao cadastrar cliente!", style="bold fg:red")
-            questionary.print(e.args[0].message, style="bold fg:red")
+            message = get_error_message(e)
+            questionary.print(message, style="bold fg:red")
             questionary.print("Pressione ENTER para continuar...", style="italic")
             input()
     
@@ -86,7 +103,14 @@ def register_volunteer(connection: oracledb.Connection):
         name = questionary.text("Qual o nome do voluntário?", validate=name_validator),
 
         birth_date = questionary.text("Qual a data de nascimento do voluntário?", validate=birth_date_validator),
-    ).ask()
+    ).ask(kbi_msg="")
+
+    if volunteer_data == {}:
+        questionary.print("\nOperação cancelada pelo usuário!", style="bold fg:red")
+        questionary.print("Pressione ENTER para continuar...", style="italic")
+        input()
+        # Volta para o menu principal
+        return
     
     # Cria um cursor para executar comandos SQL
     # (Implicitamente abre uma transação)
@@ -101,10 +125,11 @@ def register_volunteer(connection: oracledb.Connection):
             """,
             volunteer_data
         )
-    except oracledb.DatabaseError as e:
+    except oracledb.Error as e:
         # Mostra mensagem de erro
         questionary.print("\nErro ao cadastrar voluntário!", style="bold fg:red")
-        questionary.print(e.args[0].message, style="bold fg:red")
+        message = get_error_message(e)
+        questionary.print(message, style="bold fg:red")
         questionary.print("Pressione ENTER para continuar...", style="italic")
         input()
     
@@ -141,7 +166,14 @@ def register_admin(connection: oracledb.Connection):
         name = questionary.text("Qual o nome do administrador?", validate=name_validator),
 
         birth_date = questionary.text("Qual a data de nascimento do administrador?", validate=birth_date_validator),
-    ).ask()
+    ).ask(kbi_msg="")
+
+    if admin_data == {}:
+        questionary.print("\nOperação cancelada pelo usuário!", style="bold fg:red")
+        questionary.print("Pressione ENTER para continuar...", style="italic")
+        input()
+        # Volta para o menu principal
+        return
 
     # Cria um cursor para executar comandos SQL
     # (Implicitamente abre uma transação)
@@ -156,10 +188,11 @@ def register_admin(connection: oracledb.Connection):
             """,
             admin_data
         )
-    except oracledb.DatabaseError as e:
+    except oracledb.Error as e:
         # Mostra mensagem de erro
         questionary.print("\nErro ao cadastrar administrador!", style="bold fg:red")
-        questionary.print(e.args[0].message, style="bold fg:red")
+        message = get_error_message(e)
+        questionary.print(message, style="bold fg:red")
         questionary.print("Pressione ENTER para continuar...", style="italic")
         input()
 
@@ -201,19 +234,29 @@ def query_clients(connection: oracledb.Connection):
         ),
 
         name = questionary.text("Pesquisa por nome (vazio para todos):", validate=name_search_validator),
-    ).ask()
-    order_by = questionary.select(
-        "Como você deseja ordenar os resultados?",
-        choices=[
-            Choice(title="Nome", value="Nome"),
-            Choice(title="Username", value="Username"),
-            Choice(title="Módulos Cursados", value="Modulos_Cursados"),
-            Choice(title="Aprovações", value="Aprovacoes"),
-            Choice(title="Reprovações", value="Reprovacoes"),
-        ],
-        instruction="Use as setas para navegar",
-    ).ask()
 
+        order_by = questionary.select(
+            "Como você deseja ordenar os resultados?",
+            choices=[
+                Choice(title="Nome", value="Nome"),
+                Choice(title="Username", value="Username"),
+                Choice(title="Módulos Cursados", value="Modulos_Cursados"),
+                Choice(title="Aprovações", value="Aprovacoes"),
+                Choice(title="Reprovações", value="Reprovacoes"),
+            ],
+            instruction="Use as setas para navegar",
+        )
+    ).ask(kbi_msg="")
+
+    if query_params == {}:
+        questionary.print("\nOperação cancelada pelo usuário!", style="bold fg:red")
+        questionary.print("Pressione ENTER para continuar...", style="italic")
+        input()
+        # Volta para o menu principal
+        return
+
+    order_by = query_params["order_by"]
+    del query_params["order_by"]
     order_dir = "ASC" if order_by == "Nome" or order_by == "Username" else "DESC"
 
     # Linguistic sorting
@@ -269,7 +312,7 @@ def query_clients(connection: oracledb.Connection):
     # Executa o comando SQL
     try:
         cursor.execute(query, query_params)
-    except oracledb.DatabaseError as e:
+    except oracledb.Error as e:
         # Mostra mensagem de erro
         questionary.print("\nErro ao consultar clientes!", style="bold fg:red")
         questionary.print(e.args[0].message, style="bold fg:red")
