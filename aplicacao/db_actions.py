@@ -54,6 +54,7 @@ def register_client(connection: oracledb.Connection):
             input()
     
             # Volta para o menu principal
+            connection.rollback()
             return
     
         # Confirma a transação
@@ -108,6 +109,7 @@ def register_volunteer(connection: oracledb.Connection):
         input()
     
         # Volta para o menu principal
+        connection.rollback()
         return
     
     # Confirma a transação
@@ -162,6 +164,7 @@ def register_admin(connection: oracledb.Connection):
         input()
 
         # Volta para o menu principal
+        connection.rollback()
         return
 
     # Confirma a transação
